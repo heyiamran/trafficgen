@@ -6,7 +6,7 @@ device: 'cpu'
 
 use_cache: False
 debug: True
-data_path: 'init/sample_data'
+data_path: 'E:\GitHub\trafficgen\trafficgen\dataset\processed'
 sample_gap: 20
 
 max_epoch: 50
@@ -14,7 +14,7 @@ num_workers: 0
 batch_size: 4
 lr: 0.0003
 weight_decay: 0.0004
-data_usage: 4
+data_usage: 2
 hidden_dim: 1024
 gaussian_comp: 5
 

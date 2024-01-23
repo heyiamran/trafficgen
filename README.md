@@ -58,6 +58,7 @@ Note: it is not necessary to download all the files from Waymo. You can download
 Data Preprocess
 ```bash
 python trafficgen/scripts/trans20.py PATH_A PATH_B None
+python trafficgen/utils/trans20.py trafficgen/dataset/raw/ trafficgen/dataset/processed/ None
 ```
 Note: PATH_B is where you store the processed data.
 
@@ -92,6 +93,10 @@ Running following scripts will generate images and GIFs (if with `--gif`) visual
 cd TrafficGen/trafficgen
 
 python generate.py [--gif] [--save_metadrive]
+
+trafficgen/init/configs/local.yaml #change the config to modify the datapath
+
+python generate.py --gif --save_metadrive
 ```
 
 Set `--gif` flag to generate GIF files.
