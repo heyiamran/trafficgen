@@ -98,13 +98,46 @@ if __name__ == "__main__":
         # print("lane: ", data['lane'][1200])
 
         # Use the data that the time point is at 0.
-        i = data['all_agent'].shape[1]
-        print("all_agent: ", data['all_agent'][0][i-1])
-        print("traffic_light: ", data['traffic_light'][0])
-        print("lane:", data['lane'][0])
+        # i = data['all_agent'].shape[1]
+        # print("all_agent: ", data['all_agent'][0][i-1])
+        # print("traffic_light: ", data['traffic_light'][0])
+        # print("lane:", data['lane'][0])
 
-    # Example input data
-    input_data = data['all_agent'][0]
+        #lanes need to be modified, cut into pieces if the length is great than some limit.
+        # print("center_info:", type(data['center_info']))
+        # for key in data['center_info'].keys():
+        #     print(key)
+        #
+        # print("center_info:", data['center_info'][446]['width'])
+
+        # LaneType
+        # {
+        # TYPE_UNDEFINED = 0;
+        # TYPE_FREEWAY = 1;
+        # TYPE_SURFACE_STREET = 2;
+        # TYPE_BIKE_LANE = 3;
+        # }
+        # line center position (x,y),
+        SURFACE_STREET = []
+        for item in data['lane']:
+            if item[2] == 2:
+                print(item)
+                SURFACE_STREET.append(item)
+
+
+# This code below is how to construct the graph with only agents(no lanes)
+    # Example input data, Use the data that the time point is at 0.
+    #input_data = data['all_agent'][0] + SURFACE_STREET
+
+    combined_list = []
+
+    for sublist in data['all_agent'][0]:
+        combined_list.append(sublist[:2])
+
+    for sublist in SURFACE_STREET:
+        combined_list.append(sublist[:2])
+
+    input_data = combined_list
 
     # Customized threshold
     threshold = 10.0  # Customize threshold as needed
