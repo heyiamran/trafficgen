@@ -412,7 +412,7 @@ def parse_data(inut_path, output_path, pre_fix=None):
         dataset = tf.data.TFRecordDataset(file_path, compression_type='')
         for j, data in enumerate(dataset.as_numpy_iterator()):
             try:
-                if pre_fix == 'None':
+                if pre_fix == 'None': # handle if the file has a prefix
                     p = os.path.join(output_path, '{}.pkl'.format(cnt))
                 else:
                     p = os.path.join(output_path, '{}_{}.pkl'.format(pre_fix, cnt))

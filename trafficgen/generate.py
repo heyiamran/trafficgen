@@ -6,9 +6,11 @@ from trafficgen.utils.config import load_config_init
 from trafficgen.utils.typedef import AgentType, RoadLineType, RoadEdgeType
 
 if __name__ == "__main__":
-    args = get_parsed_args()
+    args = get_parsed_args() # 解析命令行参数, return args对象
 
-    cfg = load_config_init(args.config)
+    # 加载的配置文件内容 cfg。
+    cfg = load_config_init(args.config) # args.config = "trafficgen/init/configs/local.yaml"
+
     print('loading checkpoint...')
     trafficgen = TrafficGen(cfg)
     print('Complete.\n')

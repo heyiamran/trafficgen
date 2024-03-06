@@ -249,6 +249,7 @@ class InitDataset(Dataset):
     If in debug, it will load debug dataset
     """
     def __init__(self, cfg):
+        #解析.yaml文件
         self.total_data_usage = cfg["data_usage"]
         self.data_path = os.path.join(TRAFFICGEN_ROOT, cfg['data_path'])
 

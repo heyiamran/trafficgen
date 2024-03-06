@@ -17,12 +17,13 @@ from trafficgen.traffic_generator.utils.data_utils import InitDataset, save_as_m
 from trafficgen.traffic_generator.utils.vis_utils import draw, draw_seq
 from trafficgen.utils.utils import process_map, rotate
 
-TRAFFICGEN_ROOT = os.path.dirname(os.path.dirname(__file__))
+TRAFFICGEN_ROOT = os.path.dirname(os.path.dirname(__file__)) #根目录
 
 
 class TrafficGen:
     def __init__(self, cfg):
         self.cfg = cfg
+        #初始化模型
         self.init_model = initializer.load_from_checkpoint(
             os.path.join(TRAFFICGEN_ROOT, "traffic_generator", "ckpt", "init.ckpt")
         )
@@ -59,7 +60,7 @@ class TrafficGen:
         print('Complete.\n' 'Visualization results are saved in traffic_generator/output/vis/scene_static\n')
 
     def place_vehicles_for_single_scenario(self, batch, index=None, vis=False, vis_dir=None, context_num=1):
-        self.wash(batch)
+        self.wash(batch) #Transform the loaded raw data to pretty pytorch tensor.
 
         # Call the initialization model
         # The output is a dict with these keys: center, rest, bound, agent
@@ -79,7 +80,7 @@ class TrafficGen:
         return model_output
 
     def place_vehicles(self, vis=True):
-        context_num = self.cfg['context_num']
+        context_num = self.cfg['context_num'] # context_num: 1, from trafficgen/init/configs/local.yaml
 
         init_vis_dir = 'traffic_generator/output/vis/scene_initialized'
         if not os.path.exists(init_vis_dir):
@@ -88,22 +89,23 @@ class TrafficGen:
         if not os.path.exists(tmp_pth):
             os.makedirs(tmp_pth)
 
-        self.init_model.eval()
+        self.init_model.eval() # 将模型设置为评估模式
 
         data_path = self.cfg['data_path']
         with torch.no_grad():
             for idx, data in enumerate(tqdm(self.data_loader)):
                 data_file_path = os.path.join(data_path, f'{idx}.pkl')
                 with open(data_file_path, 'rb+') as f:
-                    original_data = pickle.load(f)
+                    original_data = pickle.load(f) # 解析.pkl 文件
 
-                batch = copy.deepcopy(data)
+                batch = copy.deepcopy(data) #  函数创建了一个深度拷贝（deep copy）的 data 对象，并将其赋值给 batch
 
+                # The output is a 字典 with these keys: center, rest, bound, agent
                 model_output = self.place_vehicles_for_single_scenario(batch, idx, vis, init_vis_dir, context_num)
 
                 agent, agent_mask = WaymoAgent.from_list_to_array(model_output['agent'])
 
-                # save temp data for trafficgen to generate trajectory
+                # save temp data for trafficgen to generate trajectory!!!
                 for key in batch.keys():
                     if isinstance(batch[key], torch.Tensor):
                         batch[key] = batch[key].cpu().numpy()
@@ -145,7 +147,7 @@ class TrafficGen:
             for i in tqdm(range(self.cfg['data_usage'])):
                 with open(f'traffic_generator/output/initialized_tmp/{i}.pkl', 'rb+') as f:
                     data = pickle.load(f)
-                pred_i = self.inference_control(data)
+                pred_i = self.inference_control(data) # running the model
                 if snapshot:
                     ind = list(range(0, 190, 10))
                     agent = pred_i[ind]
