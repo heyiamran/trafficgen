@@ -80,6 +80,14 @@ def construct_heterogeneous_graph(positions, threshold):
 
     return V, A
 
+def count_ones(adj_matrix):
+    count = 0
+    for row in adj_matrix:
+        for element in row:
+            if element == 0:
+                count += 1
+    return count
+
 if __name__ == "__main__":
     file_path = '0.pkl'
     with open(file_path, 'rb') as file:
@@ -96,18 +104,22 @@ if __name__ == "__main__":
         # print("lane: ", data['lane'][0])
         # print("lane: ", data['lane'][1])
         # print("lane: ", data['lane'][1200])
-
-        # Use the data that the time point is at 0.
+        #
+        # print("unsampled_lane number: ", len(data['unsampled_lane']))
+        # print("unsampled_lane: ", data['unsampled_lane'][0])
+        # print("unsampled_lane: ", data['unsampled_lane'][1])
+        # print("unsampled_lane: ", data['unsampled_lane'][1200])
+        #
+        # #Use the data that the time point is at 0.
         # i = data['all_agent'].shape[1]
         # print("all_agent: ", data['all_agent'][0][i-1])
         # print("traffic_light: ", data['traffic_light'][0])
         # print("lane:", data['lane'][0])
-
-        #lanes need to be modified, cut into pieces if the length is great than some limit.
-        # print("center_info:", type(data['center_info']))
-        # for key in data['center_info'].keys():
-        #     print(key)
         #
+        # #lanes need to be modified, cut into pieces if the length is great than some limit.
+        # print("center_info:", type(data['center_info']))
+        # # for key in data['center_info'].keys():
+        # #     print(key)
         # print("center_info:", data['center_info'][446]['width'])
 
         # LaneType
@@ -118,6 +130,7 @@ if __name__ == "__main__":
         # TYPE_BIKE_LANE = 3;
         # }
         # line center position (x,y),
+
         SURFACE_STREET = []
         for item in data['lane']:
             if item[2] == 2:
@@ -140,7 +153,7 @@ if __name__ == "__main__":
     input_data = combined_list
 
     # Customized threshold
-    threshold = 10.0  # Customize threshold as needed
+    threshold = 100  # Customize threshold as needed
 
     # Convert input data to numpy array
     positions = np.array(input_data)
@@ -150,5 +163,11 @@ if __name__ == "__main__":
 
     print("Node set V:", V)
     print("Adjacency matrix A:")
-    print(A)
 
+    #print(A)
+    for row in A[:10]:
+        print(row[:10])
+
+    num_ones = count_ones(A)
+
+    print("Sparse Rate: {:.2f}%".format(num_ones/(len(A)* len(A)) * 100))
