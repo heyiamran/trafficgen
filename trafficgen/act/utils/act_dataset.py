@@ -263,8 +263,8 @@ class actDataset(Dataset):
                 data_file_path = os.path.join(self.data_path, f'{file_indx}.pkl')
                 with open(data_file_path, 'rb+') as f:
                     datas = pickle.load(f)
-                    datas = self.process(datas)
-                    wash(datas)
+                    datas = self.process(datas) #
+                    wash(datas) #
                 self.data_loaded[file_indx] = datas
             self.data_len = self.total_data_usage
 
@@ -380,7 +380,7 @@ class actDataset(Dataset):
     def process(self, data):
         case_info = {}
 
-        self.transform_coordinate_map(data)
+        self.transform_coordinate_map(data) #
         case_info['center'], case_info['center_mask'], case_info['bound'], case_info['bound_mask'], \
         case_info['cross'], case_info['cross_mask'], case_info['rest'], case_info['rest_mask'] = process_map(
             data['lane'][[0]], [data['traffic_light'][0]], center_num=256, edge_num=128, offest=-40, lane_range=60)

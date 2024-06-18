@@ -164,9 +164,9 @@ if __name__ == "__main__":
     print("Node set V:", V)
     print("Adjacency matrix A:")
 
-    #print(A)
-    for row in A[:10]:
-        print(row[:10])
+    print(A)
+    # for row in A[:10]:
+    #     print(row[:10])
 
     num_ones = count_ones(A)
 

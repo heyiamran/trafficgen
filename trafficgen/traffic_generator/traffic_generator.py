@@ -219,6 +219,19 @@ class TrafficGen:
             print("Trajectory visualization has been generated to vis/snapshots folder.")
         print('Generated scenarios have been saved to generated_scenarios folder')
 
+    # The pred_agent output is a numpy array with shape (length, agent_num, 8), where:
+    #
+    # length: The number of time steps for which predictions are made.
+    # agent_num: The number of agents in the scene.
+    # 8: Each agent's prediction consists of 8 values:
+    # x-coordinate position.
+    # y-coordinate position.
+    # x-component of velocity.
+    # y-component of velocity.
+    # Heading direction.
+    # Acceleration in x-direction (not explicitly specified in the code but inferred from the indexing).
+    # Acceleration in y-direction (not explicitly specified in the code but inferred from the indexing).
+    # Unclear without more context from the code snippet.
     def inference_control(self, data, ego_gt=True, length=190, per_time=20):
         # for every x time step, pred then update
         agent_num = data['agent_mask'].sum()
